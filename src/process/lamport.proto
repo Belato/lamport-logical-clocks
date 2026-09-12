@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package lamport;
+
+// Serviço de rastreamento de frota usado como cenário de teste para os
+// Relógios Lógicos de Lamport. O timestamp lógico (Lamport) é o único
+// usado pelo algoritmo de ordenação; o gps_time é um relógio FÍSICO
+// simulado (com drift proposital) incluído só para evidenciar, no
+// relatório, que a ordenação causal não depende dele.
+service Tracker {
+  // P1 -> P2: leitura de posição do veículo.
+  rpc SendLocation(LocationUpdate) returns (Ack);
+  // P2 -> P3: alerta de saída de geofence.
+  rpc SendAlert(GeofenceAlert) returns (Ack);
+}
+
+message LocationUpdate {
+  string origin = 1;          // id do processo remetente (ex: "P1")
+  int64 timestamp = 2;        // relógio lógico de Lamport no envio (t = L_i)
+  string vehicle_id = 3;
+  double lat = 4;
+  double lon = 5;
+  double gps_time = 6;        // relógio físico simulado (epoch, com drift) - não usado pelo algoritmo
+}
+
+message GeofenceAlert {
+  string origin = 1;
+  int64 timestamp = 2;
+  string vehicle_id = 3;
+  string reason = 4;
+}
+
+message Ack {
+}

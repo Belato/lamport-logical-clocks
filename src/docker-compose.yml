@@ -1,44 +1,46 @@
 services:
-  p1:
+  # P3: central de monitoramento/alertas. Não tem peer de saída, só recebe.
+  p3:
     build:
       context: ./process
       dockerfile: Dockerfile
     image: process:latest
     environment:
-      PROCESS_ID: P1
-    volumes:
-      - ./process/process.py:/app/process.py
-      - ./process/logs/P1:/app/logs
-    networks:
-      - my_network
-
-  p2:
-    image: process:latest
-    environment:
-      PROCESS_ID: P2
-    volumes:
-      - ./process/process.py:/app/process.py
-      - ./process/logs/P2:/app/logs
-    networks:
-      - my_network
-
-  p3:
-    image: process:latest
-    environment:
       PROCESS_ID: P3
     volumes:
-      - ./process/process.py:/app/process.py
       - ./process/logs/P3:/app/logs
     networks:
       - my_network
 
-  # logger:
-  #   image: my_logger_image
-  #   volumes:
-  #     - ./logs:/var/log/my_app
-  #   networks:
-  #     - my_network
+  # P2: processamento de localização / geofencing. Recebe de P1, envia para P3.
+  p2:
+    image: process:latest
+    environment:
+      PROCESS_ID: P2
+      PEER_ID: P3
+      PEER_HOST: p3:50051
+    volumes:
+      - ./process/logs/P2:/app/logs
+    depends_on:
+      - p3
+    networks:
+      - my_network
 
+  # P1: rastreador GPS do veículo. Só envia, para P2.
+  p1:
+    image: process:latest
+    environment:
+      PROCESS_ID: P1
+      PEER_ID: P2
+      PEER_HOST: p2:50051
+      START_DELAY_SECONDS: "3"
+      GPS_DRIFT_SECONDS: "-5" # simula um relógio físico do GPS atrasado em 5s
+    volumes:
+      - ./process/logs/P1:/app/logs
+    depends_on:
+      - p2
+    networks:
+      - my_network
 
 networks:
   my_network:
