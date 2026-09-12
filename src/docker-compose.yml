@@ -1,0 +1,44 @@
+services:
+  p1:
+    build:
+      context: ./process
+      dockerfile: Dockerfile
+    image: process:latest
+    environment:
+      PROCESS_ID: P1
+    volumes:
+      - ./process/process.py:/app/process.py
+      - ./process/logs/P1:/app/logs
+    networks:
+      - my_network
+
+  p2:
+    image: process:latest
+    environment:
+      PROCESS_ID: P2
+    volumes:
+      - ./process/process.py:/app/process.py
+      - ./process/logs/P2:/app/logs
+    networks:
+      - my_network
+
+  p3:
+    image: process:latest
+    environment:
+      PROCESS_ID: P3
+    volumes:
+      - ./process/process.py:/app/process.py
+      - ./process/logs/P3:/app/logs
+    networks:
+      - my_network
+
+  # logger:
+  #   image: my_logger_image
+  #   volumes:
+  #     - ./logs:/var/log/my_app
+  #   networks:
+  #     - my_network
+
+
+networks:
+  my_network:
