@@ -1,0 +1,11 @@
+syntax = "proto3";
+package processes;
+
+service Processes {
+  rpc ExecuteProcess (ProcessMsg) returns (ProcessMsg);
+}
+
+message ProcessMsg {
+  string message = 1;
+  int32 timestemp = 2;
+}

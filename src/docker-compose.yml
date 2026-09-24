@@ -1,34 +1,43 @@
 services:
   p1:
     build:
-      context: ./process
-      dockerfile: Dockerfile
-    image: process:latest
+      context: .
+      dockerfile: ./p1/Dockerfile
     environment:
       PROCESS_ID: P1
     volumes:
-      - ./process/process.py:/app/process.py
-      - ./process/logs/P1:/app/logs
+      - ./p1/main.py:/app/main.py
+      - ./p1/logs:/app/logs
     networks:
       - my_network
+    depends_on:
+      p2:
+        condition: service_healthy
 
   p2:
-    image: process:latest
+    build:
+      context: .
+      dockerfile: ./p2/Dockerfile
     environment:
       PROCESS_ID: P2
     volumes:
-      - ./process/process.py:/app/process.py
-      - ./process/logs/P2:/app/logs
+      - ./p2/main.py:/app/main.py
+      - ./p2/logs:/app/logs
     networks:
       - my_network
+    healthcheck:
+      test: ["CMD", "/bin/grpc_health_probe", "-addr=:50052"]
+      interval: 5s
 
   p3:
-    image: process:latest
+    build:
+      context: .
+      dockerfile: ./p3/Dockerfile
     environment:
       PROCESS_ID: P3
     volumes:
-      - ./process/process.py:/app/process.py
-      - ./process/logs/P3:/app/logs
+      - ./p3/main.py:/app/main.py
+      - ./p3/logs:/app/logs
     networks:
       - my_network
 
