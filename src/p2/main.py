@@ -8,7 +8,7 @@ import os
 PROCESS_ID = os.getenv("PROCESS_ID")
 logger = logging.getLogger(PROCESS_ID)
 
-from processes_pb2 import ProcessMsg
+from processes_pb2 import ProcessMsg, ProcessLog, ProcessLogsList
 import processes_pb2_grpc
 
 
@@ -19,13 +19,18 @@ class Process(processes_pb2_grpc.ProcessesServicer):
 
     def __clockwork_increment(self):
         self.timestemp += 1
-        logger.info(f"Process {self.id} timestamp incremented to {self.timestemp}.")
+        Evento: %(event_type)s | Relógio Lógico: %(timestamp)s  | Detalhes: <mensagem/info>
+        # logger.info(f"Process {self.id} timestamp incremented to {self.timestemp}.")
+
+    def __generate_log(self, event_type, timestemp, message):
+        logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp}  | Detalhes: {message}")
+
 
     def _send_message(self, message=None):
 
         self.__clockwork_increment()
-        
-        logger.info(f"Process {self.id} sent message: {message} with timestamp {self.timestemp}.")
+        self.__generate_log("SEND", self.timestemp, message)
+        # logger.info(f"Process {self.id} sent message: {message} with timestamp {self.timestemp}.")
         return ProcessMsg(
             message=message,
             timestemp=self.timestemp
@@ -33,12 +38,13 @@ class Process(processes_pb2_grpc.ProcessesServicer):
 
     def _receive_message(self, process_msg):
         self.timestemp = max(self.timestemp, process_msg.timestemp) + 1
-        logger.info(f"Process {self.id} received message: {process_msg.message} with timestamp {self.timestemp}.")
+        self.__generate_log("RECEIVE", self.timestemp, process_msg.message)
+        # logger.info(f"Process {self.id} received message: {process_msg.message} with timestamp {self.timestemp}.")
 
 
     def _execute_event(self):
         self.__clockwork_increment()
-        logger.info(f"Process {self.id} executed an internal event with timestamp {self.timestemp}.")
+        self.__generate_log("EXEC", self.timestemp, "Internal event")
 
 
     def ExecuteProcess(self, process_msg_rcv, context):
@@ -47,8 +53,15 @@ class Process(processes_pb2_grpc.ProcessesServicer):
         process_msg_snd =self._send_message(process_msg_rcv.message)
         return process_msg_snd
 
+    def GetProcessLogsList(self, request, context):
+        
+        list_logs = []
+        with open(f"logs/{PROCESS_ID}.log", "r", encoding="utf-8") as log_file:
+            for line in log_file:
+                list_logs.append(ProcessLog(message=line, timestemp=self.timestemp))
 
-
+        return processes_pb2.GetProcessLogsListResponse(logs=list_logs)
+        
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -59,7 +72,10 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == "__main__":
-
-    logging.basicConfig(filename=f"logs/{PROCESS_ID}-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log", level=logging.INFO)
+#-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}
+    logging.basicConfig(
+        filename=f"logs/{PROCESS_ID}.log", 
+        format='[%(name)s] %(message)s'
+    )
     
     serve()

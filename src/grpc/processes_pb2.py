@@ -22,17 +22,20 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0fprocesses.proto\x12\tprocesses\"0\n\nProcessMsg\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x11\n\ttimestemp\x18\x02 \x01(\x05\x32K\n\tProcesses\x12>\n\x0e\x45xecuteProcess\x12\x15.processes.ProcessMsg\x1a\x15.processes.ProcessMsgb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0fprocesses.proto\x12\tprocesses\x1a\x1bgoogle/protobuf/empty.proto\"0\n\nProcessMsg\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x11\n\ttimestemp\x18\x02 \x01(\x05\"E\n\nProcessLog\x12\x0f\n\x07process\x18\x01 \x01(\t\x12\x13\n\x0blog_message\x18\x02 \x01(\t\x12\x11\n\ttimestemp\x18\x03 \x01(\x05\x32\x92\x01\n\tProcesses\x12>\n\x0e\x45xecuteProcess\x12\x15.processes.ProcessMsg\x1a\x15.processes.ProcessMsg\x12\x45\n\x12GetProcessLogsList\x12\x16.google.protobuf.Empty\x1a\x15.processes.ProcessLog0\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'processes_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_PROCESSMSG']._serialized_start=30
-  _globals['_PROCESSMSG']._serialized_end=78
-  _globals['_PROCESSES']._serialized_start=80
-  _globals['_PROCESSES']._serialized_end=155
+  _globals['_PROCESSMSG']._serialized_start=59
+  _globals['_PROCESSMSG']._serialized_end=107
+  _globals['_PROCESSLOG']._serialized_start=109
+  _globals['_PROCESSLOG']._serialized_end=178
+  _globals['_PROCESSES']._serialized_start=181
+  _globals['_PROCESSES']._serialized_end=327
 # @@protoc_insertion_point(module_scope)

@@ -1,4 +1,0 @@
-INFO:P1:Process P1 timestamp incremented to 1.
-INFO:P1:Process P1 executed an internal event with timestamp 1.
-INFO:P1:Process P1 timestamp incremented to 2.
-INFO:P1:Process P1 sent message: Hello from process with timestamp 2.

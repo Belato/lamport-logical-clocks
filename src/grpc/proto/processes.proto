@@ -1,11 +1,24 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
+
 package processes;
 
 service Processes {
   rpc ExecuteProcess (ProcessMsg) returns (ProcessMsg);
+  rpc GetProcessLogsList (google.protobuf.Empty) returns (ProcessLogsList);
 }
 
 message ProcessMsg {
   string message = 1;
   int32 timestemp = 2;
+}
+
+message ProcessLog {
+  string process = 1;
+  string log_message = 2;
+  int32 timestemp = 3;
+}
+
+message ProcessLogsList {
+  repeated ProcessLog process_logs = 1;
 }

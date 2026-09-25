@@ -1,0 +1,8 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package loggers;
+
+service Loggers {
+  rpc GenerateGlobalLog (google.protobuf.Empty) returns (google.protobuf.Empty);
+}

@@ -26,8 +26,11 @@ services:
     networks:
       - my_network
     healthcheck:
-      test: ["CMD", "/bin/grpc_health_probe", "-addr=:50052"]
+      test: ["CMD", "python", "-c", "import grpc; grpc.channel_ready_future(grpc.insecure_channel('localhost:50052')).result(timeout=3)"]
       interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   p3:
     build:

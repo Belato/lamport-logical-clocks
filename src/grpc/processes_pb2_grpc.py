@@ -3,6 +3,7 @@
 import grpc
 import warnings
 
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 import processes_pb2 as processes__pb2
 
 GRPC_GENERATED_VERSION = '1.84.0'
@@ -39,12 +40,23 @@ class ProcessesStub:
                 request_serializer=processes__pb2.ProcessMsg.SerializeToString,
                 response_deserializer=processes__pb2.ProcessMsg.FromString,
                 _registered_method=True)
+        self.GetProcessLogsList = channel.unary_stream(
+                '/processes.Processes/GetProcessLogsList',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=processes__pb2.ProcessLog.FromString,
+                _registered_method=True)
 
 
 class ProcessesServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ExecuteProcess(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetProcessLogsList(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -57,6 +69,11 @@ def add_ProcessesServicer_to_server(servicer, server):
                     servicer.ExecuteProcess,
                     request_deserializer=processes__pb2.ProcessMsg.FromString,
                     response_serializer=processes__pb2.ProcessMsg.SerializeToString,
+            ),
+            'GetProcessLogsList': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetProcessLogsList,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=processes__pb2.ProcessLog.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -86,6 +103,33 @@ class Processes:
             '/processes.Processes/ExecuteProcess',
             processes__pb2.ProcessMsg.SerializeToString,
             processes__pb2.ProcessMsg.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetProcessLogsList(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/processes.Processes/GetProcessLogsList',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            processes__pb2.ProcessLog.FromString,
             options,
             channel_credentials,
             insecure,

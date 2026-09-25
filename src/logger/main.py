@@ -1,6 +1,6 @@
 import logging
 
-class LogManager:
+class Logger(processes_pb2_grpc.LoggerServicer):
     def __init__(self, name):
         self.logger = logging.getLogger(name)
         self.logger.setLevel(logging.INFO)
@@ -16,5 +16,16 @@ class LogManager:
         self.logger.error(message)
 
 
-if "main" in __name__:
-    p1 = LogManager("P1")
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    process = Process(PROCESS_ID)
+    processes_pb2_grpc.add_ProcessesServicer_to_server(process, server)
+    server.add_insecure_port('0.0.0.0:50054')
+    server.start()
+    server.wait_for_termination()
+
+if __name__ == "__main__":
+
+    logging.basicConfig(filename=f"logs/{PROCESS_ID}-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log", level=logging.INFO)
+    
+    serve()
