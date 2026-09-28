@@ -8,8 +8,12 @@ import os
 PROCESS_ID = os.getenv("PROCESS_ID")
 logger = logging.getLogger(PROCESS_ID)
 
-from processes_pb2 import ProcessMsg
+from processes_pb2 import ProcessMsg, ProcessLog, ProcessLogsList
+from google.protobuf.empty_pb2 import Empty
+
 import processes_pb2_grpc
+import loggers_pb2_grpc
+
 
 
 class Process(processes_pb2_grpc.ProcessesServicer):
@@ -21,7 +25,7 @@ class Process(processes_pb2_grpc.ProcessesServicer):
         logger_channel = grpc.insecure_channel(f"logger:50054")
 
         self.p2 = processes_pb2_grpc.ProcessesStub(p2_channel)
-        self.logger = processes_pb2_grpc.LoggerStub(logger_channel)
+        self.logger = loggers_pb2_grpc.LoggersStub(logger_channel)
 
 
     def __clockwork_increment(self):
@@ -29,7 +33,7 @@ class Process(processes_pb2_grpc.ProcessesServicer):
         # logger.info(f"Process {self.id} timestamp incremented to {self.timestemp}.")
 
     def __generate_log(self, event_type, timestemp, message):
-        logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp}  | Detalhes: {message}")
+        logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp} | Detalhes: {message}")
 
 
     def _send_message(self, message=None):
@@ -60,20 +64,32 @@ class Process(processes_pb2_grpc.ProcessesServicer):
 
         self._execute_event()
 
-        process_msg_snd =self._send_message(process_msg_rcv.message)
+        process_msg_snd =self._send_message(message="Another message from process 1")
         return process_msg_snd
+
+
+    def GetProcessLogsList(self, request, context):
+            
+        list_logs = []
+        with open(f"logs/{PROCESS_ID}.log", "r", encoding="utf-8") as log_file:
+            for line in log_file:
+                timestemp = line.split(" | ")[1].replace("Relógio Lógico: ", "")
+                list_logs.append(ProcessLog(process=self.id, log_message=line, timestemp=int(timestemp)))
+
+        return ProcessLogsList(process_logs=list_logs)
+        
 
 
     def flow(self):
         self._execute_event()
 
-        process_msg_snd = self._send_message(message="Hello from process")
-        process_msg_rcv = self.p2.ExecuteProcess(process_msg_snd)
-        self._receive_message(process_msg_rcv)
+        p2_msg_snd = self._send_message(message="Hello from process")
+        p2_msg_rcv = self.p2.ExecuteProcess(p2_msg_snd)
+        self._receive_message(p2_msg_rcv)
         
         self._execute_event()
 
-        self.logger.GenerateGlobalLog()
+        self.logger.GenerateGlobalLog(Empty())
 
 
 
@@ -90,11 +106,12 @@ def serve(method_name):
 
     server.wait_for_termination()
 
+
 if __name__ == "__main__":
 
     logging.basicConfig(
         filename=f"logs/{PROCESS_ID}.log", 
-        format='[%(name)s] %(message)s'
+        format='[Processo %(name)s] %(message)s'
     )
 
     method_name = None

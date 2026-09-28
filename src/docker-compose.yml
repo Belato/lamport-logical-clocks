@@ -13,6 +13,10 @@ services:
     depends_on:
       p2:
         condition: service_healthy
+      p3:
+        condition: service_healthy
+      logger:
+        condition: service_healthy
 
   p2:
     build:
@@ -43,13 +47,28 @@ services:
       - ./p3/logs:/app/logs
     networks:
       - my_network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; grpc.channel_ready_future(grpc.insecure_channel('localhost:50053')).result(timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
-  # logger:
-  #   image: my_logger_image
-  #   volumes:
-  #     - ./logs:/var/log/my_app
-  #   networks:
-  #     - my_network
+  logger:
+    build:
+      context: .
+      dockerfile: ./logger/Dockerfile
+    volumes:
+      - ./logger/main.py:/app/main.py
+      - ./logger/logs:/app/logs
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; grpc.channel_ready_future(grpc.insecure_channel('localhost:50054')).result(timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
 
 networks:
