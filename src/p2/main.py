@@ -88,8 +88,10 @@ def serve():
 if __name__ == "__main__":
 #-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}
     logging.basicConfig(
-        filename=f"logs/{PROCESS_ID}.log", 
-        format='[Processo %(name)s] %(message)s'
+        filename=f"logs/{PROCESS_ID}.log",
+        filemode='w',
+        format='[Processo %(name)s] %(message)s',
+        level=logging.INFO
     )
     
     serve()

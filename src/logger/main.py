@@ -8,6 +8,8 @@ logger = logging.getLogger("Logger")
 import loggers_pb2_grpc
 import processes_pb2_grpc
 
+from google.protobuf.empty_pb2 import Empty
+
 class Logger(loggers_pb2_grpc.LoggersServicer):
     def __init__(self):
         p1_channel = grpc.insecure_channel(f"p1:50051")
@@ -22,7 +24,7 @@ class Logger(loggers_pb2_grpc.LoggersServicer):
 
     def __generate_log(self, message):
         for msg in message:
-            logger.info(f"{msg}")
+            logger.info(msg.log_message.strip())
 
 
     def GenerateGlobalLog(self, request, context):
@@ -56,6 +58,8 @@ class Logger(loggers_pb2_grpc.LoggersServicer):
 
         self.__generate_log(global_log)
 
+        return Empty()
+
         
         
     
@@ -71,8 +75,10 @@ def serve():
 if __name__ == "__main__":
     
     logging.basicConfig(
-        filename=f"logs/output.log", 
-        format='%(message)s'
+        filename=f"logs/output.log",
+        filemode='w',
+        format='%(message)s',
+        level=logging.INFO
     )
     
     serve()

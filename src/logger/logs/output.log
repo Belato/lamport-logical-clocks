@@ -1,0 +1,19 @@
+[Processo P1] Evento: EXEC | Relógio Lógico: 1 | Detalhes: Internal event
+[Processo P1] Evento: SEND | Relógio Lógico: 2 | Detalhes: Hello from process
+[Processo P2] Evento: RECEIVE | Relógio Lógico: 3 | Detalhes: Hello from process
+[Processo P2] Evento: EXEC | Relógio Lógico: 4 | Detalhes: Internal event
+[Processo P2] Evento: SEND | Relógio Lógico: 5 | Detalhes: Another message from process 2
+[Processo P3] Evento: RECEIVE | Relógio Lógico: 6 | Detalhes: Another message from process 2
+[Processo P3] Evento: EXEC | Relógio Lógico: 7 | Detalhes: Internal event
+[Processo P3] Evento: EXEC | Relógio Lógico: 8 | Detalhes: Internal event
+[Processo P3] Evento: SEND | Relógio Lógico: 9 | Detalhes: Another message from process 3
+[Processo P1] Evento: RECEIVE | Relógio Lógico: 10 | Detalhes: Another message from process 3
+[Processo P1] Evento: EXEC | Relógio Lógico: 11 | Detalhes: Internal event
+[Processo P1] Evento: SEND | Relógio Lógico: 12 | Detalhes: Another message from process 1
+[Processo P3] Evento: RECEIVE | Relógio Lógico: 13 | Detalhes: Another message from process 1
+[Processo P3] Evento: SEND | Relógio Lógico: 14 | Detalhes: Another message from process 2
+[Processo P2] Evento: RECEIVE | Relógio Lógico: 15 | Detalhes: Another message from process 2
+[Processo P2] Evento: EXEC | Relógio Lógico: 16 | Detalhes: Internal event
+[Processo P2] Evento: SEND | Relógio Lógico: 17 | Detalhes: Hello from process
+[Processo P1] Evento: RECEIVE | Relógio Lógico: 18 | Detalhes: Hello from process
+[Processo P1] Evento: EXEC | Relógio Lógico: 19 | Detalhes: Internal event

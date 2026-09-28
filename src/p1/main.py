@@ -110,8 +110,10 @@ def serve(method_name):
 if __name__ == "__main__":
 
     logging.basicConfig(
-        filename=f"logs/{PROCESS_ID}.log", 
-        format='[Processo %(name)s] %(message)s'
+        filename=f"logs/{PROCESS_ID}.log",
+        filemode='w',
+        format='[Processo %(name)s] %(message)s',
+        level=logging.INFO
     )
 
     method_name = None
