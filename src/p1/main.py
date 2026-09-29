@@ -27,44 +27,47 @@ class Process(processes_pb2_grpc.ProcessesServicer):
         self.p2 = processes_pb2_grpc.ProcessesStub(p2_channel)
         self.logger = loggers_pb2_grpc.LoggersStub(logger_channel)
 
+    def __generate_log(self, event_type, timestemp, message, process=None):
+
+        if event_type == "SEND":
+            logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp} | Detalhes: process '{process}' sent '{message}'")
+
+        elif event_type == "RECEIVE":
+            logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp} | Detalhes: process '{process}' received '{message}'")
+        
+        else:
+            logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp} | Detalhes: {message}")
 
     def __clockwork_increment(self):
-        self.timestemp += 1
-        # logger.info(f"Process {self.id} timestamp incremented to {self.timestemp}.")
+            self.timestemp += 1
 
-    def __generate_log(self, event_type, timestemp, message):
-        logger.info(f"Evento: {event_type} | Relógio Lógico: {timestemp} | Detalhes: {message}")
-
-
-    def _send_message(self, message=None):
+    def _send_message(self, message, p_target):
 
         self.__clockwork_increment()
         
-        self.__generate_log("SEND", self.timestemp, message)
-        # logger.info(f"Process {self.id} sent message: {message} with timestamp {self.timestemp}.")
+        self.__generate_log("SEND", self.timestemp, message, process=p_target)
         return ProcessMsg(
+            sender=self.id,
             message=message,
             timestemp=self.timestemp
         )
 
-    def _receive_message(self, process_msg):
-        self.timestemp = max(self.timestemp, process_msg.timestemp) + 1
-        self.__generate_log("RECEIVE", self.timestemp, process_msg.message)
-        # logger.info(f"Process {self.id} received message: {process_msg.message} with timestamp {self.timestemp}.")
+    def _receive_message(self, message, timestemp, p_origin):
+        self.timestemp = max(self.timestemp, timestemp) + 1
+        self.__generate_log("RECEIVE", self.timestemp, message, process=p_origin)
 
 
     def _execute_event(self):
         self.__clockwork_increment()
         self.__generate_log("EXEC", self.timestemp, "Internal event")
-        # logger.info(f"Process {self.id} executed an internal event with timestamp {self.timestemp}.")
 
 
     def ExecuteProcess(self, process_msg_rcv, context):
-        self._receive_message(process_msg_rcv)
+        self._receive_message(message=process_msg_rcv.message, timestemp=process_msg_rcv.timestemp, p_origin=process_msg_rcv.sender)
 
         self._execute_event()
 
-        process_msg_snd =self._send_message(message="Another message from process 1")
+        process_msg_snd =self._send_message(message="Another message from process 1", p_target=process_msg_rcv.sender)
         return process_msg_snd
 
 
@@ -83,9 +86,9 @@ class Process(processes_pb2_grpc.ProcessesServicer):
     def flow(self):
         self._execute_event()
 
-        p2_msg_snd = self._send_message(message="Hello from process")
+        p2_msg_snd = self._send_message(message="Process 1 sending message to process 2", p_target="P2")
         p2_msg_rcv = self.p2.ExecuteProcess(p2_msg_snd)
-        self._receive_message(p2_msg_rcv)
+        self._receive_message(message=p2_msg_rcv.message, timestemp=p2_msg_rcv.timestemp, p_origin=p2_msg_rcv.sender)
         
         self._execute_event()
 

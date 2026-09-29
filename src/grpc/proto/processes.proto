@@ -9,8 +9,9 @@ service Processes {
 }
 
 message ProcessMsg {
-  string message = 1;
-  int32 timestemp = 2;
+  string sender = 1;
+  string message = 2;
+  int32 timestemp = 3;
 }
 
 message ProcessLog {
