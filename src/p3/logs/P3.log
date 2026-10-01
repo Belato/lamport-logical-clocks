@@ -1,6 +1,0 @@
-[Processo P3] Evento: RECEIVE | Relógio Lógico: 6 | Detalhes: Another message from process 2
-[Processo P3] Evento: EXEC | Relógio Lógico: 7 | Detalhes: Internal event
-[Processo P3] Evento: EXEC | Relógio Lógico: 8 | Detalhes: Internal event
-[Processo P3] Evento: SEND | Relógio Lógico: 9 | Detalhes: Another message from process 3
-[Processo P3] Evento: RECEIVE | Relógio Lógico: 13 | Detalhes: Another message from process 1
-[Processo P3] Evento: SEND | Relógio Lógico: 14 | Detalhes: Another message from process 2

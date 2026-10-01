@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0fprocesses.proto\x12\tprocesses\x1a\x1bgoogle/protobuf/empty.proto\"@\n\nProcessMsg\x12\x0e\n\x06sender\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x11\n\ttimestemp\x18\x03 \x01(\x05\"E\n\nProcessLog\x12\x0f\n\x07process\x18\x01 \x01(\t\x12\x13\n\x0blog_message\x18\x02 \x01(\t\x12\x11\n\ttimestemp\x18\x03 \x01(\x05\">\n\x0fProcessLogsList\x12+\n\x0cprocess_logs\x18\x01 \x03(\x0b\x32\x15.processes.ProcessLog2\x95\x01\n\tProcesses\x12>\n\x0e\x45xecuteProcess\x12\x15.processes.ProcessMsg\x1a\x15.processes.ProcessMsg\x12H\n\x12GetProcessLogsList\x12\x16.google.protobuf.Empty\x1a\x1a.processes.ProcessLogsListb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0fprocesses.proto\x12\tprocesses\x1a\x1bgoogle/protobuf/empty.proto\"@\n\nProcessMsg\x12\x0e\n\x06sender\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x11\n\ttimestemp\x18\x03 \x01(\x05\"E\n\nProcessLog\x12\x0f\n\x07process\x18\x01 \x01(\t\x12\x13\n\x0blog_message\x18\x02 \x01(\t\x12\x11\n\ttimestemp\x18\x03 \x01(\x05\">\n\x0fProcessLogsList\x12+\n\x0cprocess_logs\x18\x01 \x03(\x0b\x32\x15.processes.ProcessLog2\xd8\x01\n\tProcesses\x12>\n\x0e\x45xecuteProcess\x12\x15.processes.ProcessMsg\x1a\x15.processes.ProcessMsg\x12\x41\n\x0f\x45xecuteTestCase\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\x12H\n\x12GetProcessLogsList\x12\x16.google.protobuf.Empty\x1a\x1a.processes.ProcessLogsListb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,5 +39,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_PROCESSLOGSLIST']._serialized_start=196
   _globals['_PROCESSLOGSLIST']._serialized_end=258
   _globals['_PROCESSES']._serialized_start=261
-  _globals['_PROCESSES']._serialized_end=410
+  _globals['_PROCESSES']._serialized_end=477
 # @@protoc_insertion_point(module_scope)

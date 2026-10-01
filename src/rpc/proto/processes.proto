@@ -5,6 +5,7 @@ package processes;
 
 service Processes {
   rpc ExecuteProcess (ProcessMsg) returns (ProcessMsg);
+  rpc ExecuteTestCase (google.protobuf.Empty) returns (google.protobuf.Empty);
   rpc GetProcessLogsList (google.protobuf.Empty) returns (ProcessLogsList);
 }
 

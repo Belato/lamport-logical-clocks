@@ -2,12 +2,15 @@ services:
   p1:
     build:
       context: .
-      dockerfile: ./p1/Dockerfile
+      dockerfile: ./proccesses/p1/Dockerfile
     environment:
       PROCESS_ID: P1
+    ports:
+      - "50051:50051"
     volumes:
-      - ./p1/main.py:/app/main.py
-      - ./p1/logs:/app/logs
+      - ./proccesses/process.py:/app/process.py
+      - ./proccesses/p1/main.py:/app/main.py
+      - ./proccesses/p1/logs:/app/logs
     networks:
       - my_network
     depends_on:
@@ -17,16 +20,23 @@ services:
         condition: service_healthy
       logger:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; grpc.channel_ready_future(grpc.insecure_channel('localhost:50051')).result(timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   p2:
     build:
       context: .
-      dockerfile: ./p2/Dockerfile
+      dockerfile: ./proccesses/p2/Dockerfile
     environment:
       PROCESS_ID: P2
     volumes:
-      - ./p2/main.py:/app/main.py
-      - ./p2/logs:/app/logs
+      - ./proccesses/process.py:/app/process.py
+      - ./proccesses/p2/main.py:/app/main.py
+      - ./proccesses/p2/logs:/app/logs
     networks:
       - my_network
     healthcheck:
@@ -39,12 +49,13 @@ services:
   p3:
     build:
       context: .
-      dockerfile: ./p3/Dockerfile
+      dockerfile: ./proccesses/p3/Dockerfile
     environment:
       PROCESS_ID: P3
     volumes:
-      - ./p3/main.py:/app/main.py
-      - ./p3/logs:/app/logs
+      - ./proccesses/process.py:/app/process.py
+      - ./proccesses/p3/main.py:/app/main.py
+      - ./proccesses/p3/logs:/app/logs
     networks:
       - my_network
     healthcheck:

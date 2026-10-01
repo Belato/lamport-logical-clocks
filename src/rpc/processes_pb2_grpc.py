@@ -40,6 +40,11 @@ class ProcessesStub:
                 request_serializer=processes__pb2.ProcessMsg.SerializeToString,
                 response_deserializer=processes__pb2.ProcessMsg.FromString,
                 _registered_method=True)
+        self.ExecuteTestCase = channel.unary_unary(
+                '/processes.Processes/ExecuteTestCase',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
         self.GetProcessLogsList = channel.unary_unary(
                 '/processes.Processes/GetProcessLogsList',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
@@ -51,6 +56,12 @@ class ProcessesServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ExecuteProcess(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ExecuteTestCase(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -69,6 +80,11 @@ def add_ProcessesServicer_to_server(servicer, server):
                     servicer.ExecuteProcess,
                     request_deserializer=processes__pb2.ProcessMsg.FromString,
                     response_serializer=processes__pb2.ProcessMsg.SerializeToString,
+            ),
+            'ExecuteTestCase': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecuteTestCase,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'GetProcessLogsList': grpc.unary_unary_rpc_method_handler(
                     servicer.GetProcessLogsList,
@@ -103,6 +119,33 @@ class Processes:
             '/processes.Processes/ExecuteProcess',
             processes__pb2.ProcessMsg.SerializeToString,
             processes__pb2.ProcessMsg.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExecuteTestCase(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/processes.Processes/ExecuteTestCase',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,

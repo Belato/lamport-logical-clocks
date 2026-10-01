@@ -1,0 +1,12 @@
+[Processo P2] Evento: EXEC | Relógio Lógico: 1 | Detalhes: Internal event
+[Processo P2] Evento: EXEC | Relógio Lógico: 2 | Detalhes: Internal event
+[Processo P2] Evento: EXEC | Relógio Lógico: 3 | Detalhes: Internal event
+[Processo P2] Evento: EXEC | Relógio Lógico: 4 | Detalhes: Internal event
+[Processo P2] Evento: EXEC | Relógio Lógico: 5 | Detalhes: Internal event
+[Processo P2] Evento: RECEIVE | Relógio Lógico: 6 | Detalhes: process 'P1' received 'Process 1 sending message to process 2'
+[Processo P2] Evento: EXEC | Relógio Lógico: 7 | Detalhes: Internal event
+[Processo P2] Evento: SEND | Relógio Lógico: 8 | Detalhes: process 'P3' sent 'Another message from process 2'
+[Processo P2] Evento: EXEC | Relógio Lógico: 9 | Detalhes: Internal event
+[Processo P2] Evento: RECEIVE | Relógio Lógico: 18 | Detalhes: process 'P3' received 'Another message from process 2'
+[Processo P2] Evento: EXEC | Relógio Lógico: 19 | Detalhes: Internal event
+[Processo P2] Evento: SEND | Relógio Lógico: 20 | Detalhes: process 'P1' sent 'Process 1 sending message to process 2'

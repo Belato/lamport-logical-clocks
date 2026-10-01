@@ -1,6 +1,0 @@
-[Processo P2] Evento: RECEIVE | Relógio Lógico: 3 | Detalhes: Hello from process
-[Processo P2] Evento: EXEC | Relógio Lógico: 4 | Detalhes: Internal event
-[Processo P2] Evento: SEND | Relógio Lógico: 5 | Detalhes: Another message from process 2
-[Processo P2] Evento: RECEIVE | Relógio Lógico: 15 | Detalhes: Another message from process 2
-[Processo P2] Evento: EXEC | Relógio Lógico: 16 | Detalhes: Internal event
-[Processo P2] Evento: SEND | Relógio Lógico: 17 | Detalhes: Hello from process
